@@ -19,15 +19,13 @@ const createToken = (email, secret, expiresIn = "1h") => {
 
 const signup = async (req, res) => {
     try {
-        const { email, password, name, role, phone } = req?.body;
+        const { email, password, name } = req?.body;
         const salt = await generateSalt();
         const hashedPassword = await hashPassword(password, salt);
         const user = new User({
             email,
             password: hashedPassword,
             name,
-            role,
-            phone,
             salt,
         });
         await user.save();
