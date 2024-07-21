@@ -12,21 +12,23 @@ const hashPassword = async (password, salt) => {
     return await bcrypt.hash(password, salt);
 };
 
-const createToken = (email, secret, expiresIn = "1h") => {
-    return jwt.sign({ email }, secret, { expiresIn });
+const createToken = (userid, secret, expiresIn = "1h") => {
+    return jwt.sign({ userid }, secret, { expiresIn });
 };
 
 
 const signup = async (req, res) => {
     try {
-        const { email, password, name } = req?.body;
+        const { email, password, username } = req?.body;
         const salt = await generateSalt();
         const hashedPassword = await hashPassword(password, salt);
         const user = new User({
             email,
             password: hashedPassword,
-            name,
+            username,
             salt,
+            products: [],
+            favourites: [],
         });
         await user.save();
         logger.info("User Created");
@@ -52,7 +54,7 @@ const login = async (req, res) => {
         const salt = user.salt;
         const hashedPassword = await hashPassword(password, salt);
         if (user.password === hashedPassword) {
-            const token = createToken(user.email, process.env.JWT_SECRET);
+            const token = createToken(user._id, process.env.JWT_SECRET);
             logger.info(cons.success);
             res.status(cons.ok).json({ message: cons.success, token });
         } else {
