@@ -1,21 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "../../assets/testdashboardhero.jpg";
 import WorkIcon from "../../assets/location.jpg";
 import MonitorIcon from "../../assets/monitor.jpg";
 import InsightsIcon from  "../../assets/insights.jpg";
 import BugIcon from  "../../assets/issue.jpg";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+import { isTokenExpired } from "../../utils/authutils";
 
 const Hero = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get('authToken');
+    setIsLoggedIn(token && !isTokenExpired(token));
+  }, []);
+
   const handleLoginClick = () => {
-    // Handle login click action
-    console.log("Login clicked");
+    navigate("/login");
+  };
+
+  const handleSignupClick = () => {
+    navigate("/signup");
   };
 
   return (
     <div
       className="bg-green-100 py-20 px-4 md:px-10 border-b border-black"
       style={{ marginTop: "64px" }}
-      border-b border-black
     >
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
@@ -25,18 +38,25 @@ const Hero = () => {
           Monitor your machines and prevent breakdowns with our powerful
           predictive maintenance dashboard, all in one place.
         </p>
-        <button className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
-          Start for free
-        </button>
-        <p className="mt-6 text-gray-800">
-          Already have an account?{" "}
-          <span
-            className="cursor-pointer text-green-600 hover:underline"
-            onClick={handleLoginClick}
-          >
-            Log in now
-          </span>
-        </p>
+        {!isLoggedIn && (
+          <>
+            <button 
+              onClick={handleSignupClick} 
+              className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300"
+            >
+              Start for free
+            </button>
+            <p className="mt-6 text-gray-800">
+              Already have an account?{" "}
+              <span
+                className="cursor-pointer text-green-600 hover:underline"
+                onClick={handleLoginClick}
+              >
+                Log in now
+              </span>
+            </p>
+          </>
+        )}
       </div>
       <img
         src={Dashboard}
@@ -65,7 +85,7 @@ const Hero = () => {
 
           {/* Block 2 */}
           <div className="flex flex-col items-center text-center">
-          <img
+            <img
               src={MonitorIcon}
               alt="Monitor icon"
               className="h-20 w-50 mb-5"
@@ -74,14 +94,14 @@ const Hero = () => {
               Monitor everything
             </h3>
             <p className="text-xl text-gray-700">
-              Input sensor data, view analytics,receive machine failure
+              Input sensor data, view analytics, receive machine failure
               predictions in real-time.
             </p>
           </div>
 
           {/* Block 3 */}
           <div className="flex flex-col items-center text-center">
-          <img
+            <img
               src={InsightsIcon}
               alt="Insights icon"
               className="h-20 w-50 mb-5"
@@ -96,7 +116,7 @@ const Hero = () => {
 
           {/* Block 4 */}
           <div className="flex flex-col items-center text-center">
-          <img
+            <img
               src={BugIcon}
               alt="Issue icon"
               className="h-20 w-50 mb-5"

@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import yourdata from "../../assets/yourdata.png";
 import twenty from "../../assets/24-7.jpg";
-import instants from "../../assets/instants.jpg"
+import instants from "../../assets/instants.jpg";
 import AccordionSection from "./Accordion";
 import collab from "../../assets/collab.jpg";
-
+import Cookies from 'js-cookie';
+import { isTokenExpired } from "../../utils/authutils";
+import { useNavigate } from "react-router-dom";
 const BelowHero = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const handlesignup = () => {
+    navigate('/signup');
+  }
+  useEffect(() => {
+    const token = Cookies.get('authToken');
+    setIsLoggedIn(token && !isTokenExpired(token));
+  }, []);
+
   return (
     <>
       <div className="bg-green-100 py-20 px-4 md:px-10">
-        <div className="max-w-4xl mx-auto mt-5 flex flex-col md:flex-row items-center justify-between ">
+        <div className="max-w-4xl mx-auto mt-5 flex flex-col md:flex-row items-center justify-between">
           {/* Left Content Section */}
           <div className="md:w-1/2 mb-8 md:mb-0 md:mr-8">
-            {" "}
-            {/* Added md:mr-8 for additional margin on medium screens and larger */}
             <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
               Your data, your way
             </h2>
@@ -27,7 +37,6 @@ const BelowHero = () => {
           </div>
           {/* Right Image Section */}
           <div className="md:w-1/2">
-            {/* Replace with your image component or content */}
             <img
               src={yourdata}
               alt="Data image"
@@ -38,18 +47,14 @@ const BelowHero = () => {
         <div className="max-w-4xl mx-auto mt-52 flex flex-col md:flex-row items-center justify-between">
           {/* Left Content Section */}
           <div className="md:w-1/2 mb-8 md:mb-0 md:mr-8">
-            {/* Replace with your image component or content */}
             <img
               src={twenty}
               alt="24/7 image"
-              className="w-full h-auto rounded-md "
+              className="w-full h-auto rounded-md"
             />
           </div>
-
           {/* Right Image Section */}
           <div className="md:w-1/2">
-            {" "}
-            {/* Added md:mr-8 for additional margin on medium screens and larger */}
             <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
               24/7 access
             </h2>
@@ -59,16 +64,16 @@ const BelowHero = () => {
               problem—offline mode lets you continue to use Pyro even when
               connectivity is limited.
             </p>
-            <button className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
-              Start for free
-            </button>
+            {!isLoggedIn && (
+              <button onClick={handlesignup}className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
+                Start for free
+              </button>
+            )}
           </div>
         </div>
-        <div className="max-w-4xl mx-auto mt-52 flex flex-col md:flex-row items-center justify-between ">
+        <div className="max-w-4xl mx-auto mt-52 flex flex-col md:flex-row items-center justify-between">
           {/* Left Content Section */}
           <div className="md:w-1/2 mb-8 md:mb-0 md:mr-8">
-            {" "}
-            {/* Added md:mr-8 for additional margin on medium screens and larger */}
             <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
               Instant insights
             </h2>
@@ -84,10 +89,9 @@ const BelowHero = () => {
           </div>
           {/* Right Image Section */}
           <div className="md:w-1/2">
-            {/* Replace with your image component or content */}
             <img
               src={instants}
-              alt="Image Alt Text"
+              alt="Instant insights"
               className="w-full h-auto rounded-md shadow-md"
             />
           </div>
@@ -95,18 +99,14 @@ const BelowHero = () => {
         <div className="max-w-4xl mx-auto mt-52 flex flex-col md:flex-row items-center justify-between">
           {/* Left Content Section */}
           <div className="md:w-1/2 mb-8 md:mb-0 md:mr-8">
-            {/* Replace with your image component or content */}
             <img
               src={collab}
-              alt="Image Alt Text"
+              alt="Effortless collaboration"
               className="w-full h-auto rounded-md shadow-md"
             />
           </div>
-
           {/* Right Image Section */}
           <div className="md:w-1/2">
-            {" "}
-            {/* Added md:mr-8 for additional margin on medium screens and larger */}
             <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
               Effortless collaboration
             </h2>
@@ -147,9 +147,11 @@ const BelowHero = () => {
             Monitor your machines and prevent breakdowns with our powerful
             predictive maintenance dashboard, all in one place.
           </p>
-          <button className="bg-white hover:bg-teal-200 text-black text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
-            Start for free
-          </button>
+          {!isLoggedIn && (
+            <button onClick={handlesignup} className="bg-white hover:bg-teal-200 text-black text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
+              Start for free
+            </button>
+          )}
         </div>
       </div>
     </>
