@@ -31,7 +31,7 @@ export default function SignupPage() {
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_APP_URL}user/signup`, {
-        name: username,
+        username,
         email,
         password
       });

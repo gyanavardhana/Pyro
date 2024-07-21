@@ -4,10 +4,16 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const db = require("./DB/db");
 const userRoutes = require("./Routes/userRoute");
+const mlRoutes = require("./Routes/mlRoute");
+const settingRoutes = require("./Routes/settingRoute");
+const leaderRoutes = require("./Routes/leaderRoute");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
+app.use('/ml', mlRoutes);
+app.use('/setting', settingRoutes);
+app.use('/leader', leaderRoutes);
 
 app.get('/',(req,res)=>{
     res.send("Hello World");

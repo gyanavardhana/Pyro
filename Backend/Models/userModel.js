@@ -1,15 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    name: { type: String, required: true },
-    salt: { type: String },
+    salt: { type: String, required: true },
+    products: [{ type: Schema.Types.ObjectId, ref: 'Product' }], // Array of ProductIds
+    favourites: [{ type: Schema.Types.ObjectId, ref: 'Product' }] // Array of favourite ProductIds
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;
