@@ -20,7 +20,7 @@ const validatetoken = (token) => {
     }
 };
 
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyC_kRaTa9ECDAEcJxP8C1w7oh5UBe1y3Y8"; // Update with your API key
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=<API_KEY>"; // Update with your API key
 const PREDICT_API_URL = "https://flask-predict-1p0e.onrender.com/predict";
 const PLOT_API_URL = "https://flask-predict-1p0e.onrender.com/plot";
 
