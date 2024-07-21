@@ -20,7 +20,7 @@ const validatetoken = (token) => {
 // Helper function to call the external API and create ProductOutput
 const postProductOutput = async (Type, Airtemperature, Processtemperature, Rotationalspeed, Torque, Toolwear, productId) => {
     try {
-        const response = await axios.post('http://localhost:5000/predict', {
+        const response = await axios.post('https://flask-predict-1p0e.onrender.com/predict', {
             "Type": Type,
             "Air Temperature": Airtemperature,
             "Process Temperature": Processtemperature,
