@@ -5,9 +5,11 @@ import LoginPage from './Components/Login/Login';
 import PlotComponent from './Components/Plot';
 import SettingsPage from './Components/Settingspage/Settings';
 import MLComponent from './Components/MLpage/MLpage';
+import Leaderboard from './Components/Leaderboard/Leaderboard';
 import 'primereact/resources/themes/saga-blue/theme.css'; // or any other theme
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+
 
 import './index.css'
 const App = () => {
@@ -20,6 +22,7 @@ const App = () => {
       <Route path="/plot" element={<PlotComponent />}/>
       <Route path="/settings/" element={<SettingsPage />} />  
       <Route path="/mlupload" element={<MLComponent />} />
+      <Route path="/leaderboard" element={<Leaderboard />} />
     </Routes>
     </>
   )

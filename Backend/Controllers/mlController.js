@@ -20,7 +20,7 @@ const validatetoken = (token) => {
 // Helper function to call the external API and create ProductOutput
 const postProductOutput = async (Type, Airtemperature, Processtemperature, Rotationalspeed, Torque, Toolwear, productId) => {
     try {
-        const response = await axios.post('https://flask-predict-1p0e.onrender.com/predict', {
+        const response = await axios.post(`${process.env.ML_URI}/predict`, {
             "Type": Type,
             "Air Temperature": Airtemperature,
             "Process Temperature": Processtemperature,
@@ -55,6 +55,7 @@ const createProduct = async (req, res) => {
 
     const token = req.headers.authorization.split(' ')[1];
     const userid = validatetoken(token);
+    console.log(userid);
 
     if (!userid) {
         return res.status(cons.unauthorized).json({ message: 'Invalid or expired token' });
