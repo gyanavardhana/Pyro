@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { isTokenExpired } from '../../utils/authutils'; // Adjust the import path as needed
 import * as XLSX from 'xlsx';
+import Loader from '../Loader';
 
 const YourData = () => {
   const [data, setData] = useState([]);
@@ -103,7 +104,16 @@ const YourData = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+      <div className="flex flex-col items-center justify-center min-h-screen">
+          <Loader />
+          <h2 className="text-center pt-8 text-4xl md:text-5xl font-bold text-green-900 mb-6">
+            Loading your data
+          </h2>
+        </div>
+      </>
+    )
   }
 
   return (

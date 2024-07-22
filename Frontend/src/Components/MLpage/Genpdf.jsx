@@ -1,5 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { toast, Zoom } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 const generateAndOpenPdf = async () => {
   try {
@@ -18,7 +20,31 @@ const generateAndOpenPdf = async () => {
     const pdfWindow = window.open();
     pdfWindow.location.href = url;
 
+    // Notify the user of successful PDF generation
+    toast.success('PDF generated and opened successfully!', {
+      position: 'bottom-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: 'light',
+      transition: Zoom,
+    });
+
   } catch (error) {
+    // Notify the user of an error
+    toast.error('Error generating or opening PDF', {
+      position: 'bottom-right',
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: 'light',
+      transition: Zoom,
+    });
+
     console.error('Error generating or opening PDF:', error);
   }
 };

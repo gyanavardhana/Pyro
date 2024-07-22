@@ -98,7 +98,7 @@ const getLeaderboard = async (req, res) => {
             },
             {
                 $setWindowFields: {
-                    sortBy: { rankScore: -1 },
+                    sortBy: { rankScore: 1 },
                     output: {
                         rank: { $rank: {} }
                     }
@@ -119,7 +119,7 @@ const getLeaderboard = async (req, res) => {
 
         // Email notification for products below the threshold ratio
         const ratioThreshold = 0.5; // Define your threshold ratio here
-        const lowRatioProducts = leaderboard.filter(product => product.ratio < ratioThreshold);
+        const lowRatioProducts = leaderboard.filter(product => product.ratio > ratioThreshold);
 
         if (lowRatioProducts.length > 0) {
             const subject = 'Products Below Desired Ratio';
@@ -172,7 +172,7 @@ const getLeaderboard = async (req, res) => {
             await sendEmail(userEmail, subject, htmlContent);
         }
 
-        res.json(leaderboard.sort((a, b) => a.rank - b.rank));
+        res.json(leaderboard);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

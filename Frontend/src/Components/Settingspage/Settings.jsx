@@ -4,13 +4,37 @@ import Data from "./YourData"; // Updated import
 import Preferences from "./YourPreferences"; // Updated import
 import Cookies from "js-cookie";
 import Navbar from "../Homepage/Navbar";
+import { toast, Zoom } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("data");
-
   const handleLogout = () => {
-    Cookies.remove("authToken");
-    window.location.href = "/"; // Redirect to the homepage
+    try {
+      Cookies.remove("authToken");
+      toast.success("Successfully logged out!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
+      window.location.href = "/"; // Redirect to the homepage
+    } catch (error) {
+      toast.error("Error during logout. Please try again.", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
+    }
   };
 
   return (

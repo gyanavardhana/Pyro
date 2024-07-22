@@ -7,12 +7,15 @@ import collab from "../../assets/collab.jpg";
 import Cookies from 'js-cookie';
 import { isTokenExpired } from "../../utils/authutils";
 import { useNavigate } from "react-router-dom";
+
 const BelowHero = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const handlesignup = () => {
     navigate('/signup');
-  }
+  };
+
   useEffect(() => {
     const token = Cookies.get('authToken');
     setIsLoggedIn(token && !isTokenExpired(token));
@@ -65,7 +68,7 @@ const BelowHero = () => {
               connectivity is limited.
             </p>
             {!isLoggedIn && (
-              <button onClick={handlesignup}className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
+              <button onClick={handlesignup} className="bg-green-500 hover:bg-green-600 text-white text-xl font-semibold py-3 px-8 rounded-md shadow-md transition duration-300">
                 Start for free
               </button>
             )}
@@ -134,11 +137,7 @@ const BelowHero = () => {
         </div>
         <AccordionSection />
       </div>
-      <div
-        className="bg-teal-800 py-20 px-4 md:px-10"
-        border-b
-        border-black
-      >
+      <div className="bg-teal-800 py-20 px-4 md:px-10">
         <div className="max-w-4xl mx-auto text-center bg-teal-800 text-white">
           <h1 className="text-4xl mt-10 md:text-5xl font-bold mb-6">
             Predict failures, optimize maintenance

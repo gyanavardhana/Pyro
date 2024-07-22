@@ -3,6 +3,8 @@ import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { isTokenExpired } from "../../utils/authutils"; // Adjust the import path as needed
+import { toast, Zoom } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 
 const Star = ({ isFavourite, productId }) => {
   const [favorite, setFavorite] = useState(isFavourite);
@@ -10,13 +12,23 @@ const Star = ({ isFavourite, productId }) => {
 
   const handleClick = async () => {
     if (!token || isTokenExpired(token)) {
-      alert("Session timed out");
+      toast.error("Session timed out", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
       return;
     }
 
     try {
+      let response;
       if (favorite) {
-        const response = await axios.delete(
+        response = await axios.delete(
           `${import.meta.env.VITE_APP_URL}leader/removefavorites`,
           {
             headers: {
@@ -25,9 +37,18 @@ const Star = ({ isFavourite, productId }) => {
             data: { productId },
           }
         );
-        alert(response.data.message);
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Zoom,
+        });
       } else {
-        const response = await axios.post(
+        response = await axios.post(
           `${import.meta.env.VITE_APP_URL}leader/addfavorites`,
           { productId },
           {
@@ -36,10 +57,29 @@ const Star = ({ isFavourite, productId }) => {
             },
           }
         );
-        alert(response.data.message);
+        toast.success(response.data.message, {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Zoom,
+        });
       }
       setFavorite(!favorite);
     } catch (error) {
+      toast.error("Error updating favorite status", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
       console.error("Error updating favorite status:", error);
     }
   };
