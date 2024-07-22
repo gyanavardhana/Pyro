@@ -9,6 +9,8 @@ import ProductDetails from "./Productdetails";
 import GenerateReport from "./Genreport";
 import Sidebar from "./Sidebar";
 import InputForm from "./Inputform";
+import { toast, Zoom } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify styles
 
 const CreateProductForm = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +30,11 @@ const CreateProductForm = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
+  const navigateToLogin = () => {
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500); // Delay navigation to match Toastify autoClose duration
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,8 +59,17 @@ const CreateProductForm = () => {
     const token = Cookies.get("authToken");
 
     if (!token) {
-      alert("Session timed out");
-      navigate("/login");
+      toast.error("Session timed out", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
+      navigateToLogin();
       return;
     }
 
@@ -68,8 +84,28 @@ const CreateProductForm = () => {
         }
       );
       setPredictionResult(response.data.prediction.prediction);
+      toast.success("Product created successfully!", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
       setIsSidebarOpen(false); // Close sidebar after loading
     } catch (error) {
+      toast.error(`Error: ${error.message}`, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
       setError(error.message);
     } finally {
       setLoading(false);
@@ -81,6 +117,16 @@ const CreateProductForm = () => {
     try {
       await generateAndOpenPdf();
     } catch (error) {
+      toast.error("Error generating or opening PDF", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
       console.error("Error generating or opening PDF:", error);
     } finally {
       setPdfLoading(false);

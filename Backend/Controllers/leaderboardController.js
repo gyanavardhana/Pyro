@@ -4,6 +4,8 @@ const User = require('../Models/userModel');
 const cons = require('../cons');
 const logger = require('../logger/logger');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../Controllers/emailService'); // Import the email service
+
 
 // Helper function to validate JWT token
 const validatetoken = (token) => {
@@ -37,7 +39,7 @@ const getLeaderboard = async (req, res) => {
         const leaderboard = await ProductOutput.aggregate([
             {
                 $lookup: {
-                    from: 'products', // Ensure this matches the actual collection name
+                    from: 'products',
                     localField: 'productid',
                     foreignField: '_id',
                     as: 'product'
@@ -66,7 +68,7 @@ const getLeaderboard = async (req, res) => {
                         ]
                     },
                     isFavourite: {
-                        $in: ['$product._id', favouriteProductIds] // Check if product is a favourite
+                        $in: ['$product._id', favouriteProductIds]
                     }
                 }
             },
@@ -77,28 +79,28 @@ const getLeaderboard = async (req, res) => {
                     averageRiskScore: { $avg: '$averageRiskScore' },
                     ratio: { $avg: '$ratio' },
                     riskPercentage: { $avg: '$riskPercentage' },
-                    isFavourite: { $first: '$isFavourite' } // Keep track of favourite status
+                    isFavourite: { $first: '$isFavourite' }
                 }
             },
             {
                 $addFields: {
                     rankScore: {
                         $add: [
-                            { $multiply: ['$ratio', 0.5] }, // Adjust weight as needed
-                            { $multiply: ['$riskPercentage', 0.3] }, // Adjust weight as needed
-                            { $multiply: ['$averageRiskScore', 0.2] }  // Adjust weight as needed
+                            { $multiply: ['$ratio', 0.5] },
+                            { $multiply: ['$riskPercentage', 0.3] },
+                            { $multiply: ['$averageRiskScore', 0.2] }
                         ]
                     }
                 }
             },
             {
-                $sort: { rankScore: -1 } // Sort by rankScore in descending order
+                $sort: { rankScore: -1 }
             },
             {
                 $setWindowFields: {
-                    sortBy: { rankScore: -1 }, // Sort by rankScore
+                    sortBy: { rankScore: 1 },
                     output: {
-                        rank: { $rank: {} } // Assign ranks based on sorted order
+                        rank: { $rank: {} }
                     }
                 }
             },
@@ -109,11 +111,66 @@ const getLeaderboard = async (req, res) => {
                     averageRiskScore: 1,
                     ratio: 1,
                     riskPercentage: 1,
-                    rank: 1, // Include rank in the final output
-                    isFavourite: 1 // Include favourite status in the final output
+                    rank: 1,
+                    isFavourite: 1
                 }
             }
         ]);
+
+        // Email notification for products below the threshold ratio
+        const ratioThreshold = 0.5; // Define your threshold ratio here
+        const lowRatioProducts = leaderboard.filter(product => product.ratio > ratioThreshold);
+
+        if (lowRatioProducts.length > 0) {
+            const subject = 'Products Below Desired Ratio';
+            const htmlContent = `
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            color: #333;
+                            padding: 20px;
+                        }
+                        h1 {
+                            color: #e74c3c;
+                            font-size: 24px;
+                        }
+                        .alert-icon {
+                            width: 40px;
+                            height: 40px;
+                            vertical-align: middle;
+                        }
+                        ul {
+                            padding-left: 20px;
+                        }
+                        li {
+                            margin-bottom: 10px;
+                        }
+                        .footer {
+                            margin-top: 20px;
+                            font-size: 14px;
+                            color: #777;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1><img src="http://localhost:5173/src/assets/alert-icon.png" class="alert-icon" alt="Alert Icon" /> Alert: Products Below Desired Ratio</h1>
+                    <p>The following products are below the desired ratio threshold of ${ratioThreshold}:</p>
+                    <ul>
+                        ${lowRatioProducts.map(product => `
+                            <li>
+                                <strong>${product.name}</strong>: Ratio ${product.ratio}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <p class="footer">Consider reviewing these products to mitigate potential risks.</p>
+                </body>
+                </html>
+            `;
+            const userEmail = user.email; // Assuming user email is stored in the User model
+            await sendEmail(userEmail, subject, htmlContent);
+        }
 
         res.json(leaderboard);
     } catch (error) {
@@ -125,5 +182,3 @@ const getLeaderboard = async (req, res) => {
 module.exports = {
     getLeaderboard
 };
-
-

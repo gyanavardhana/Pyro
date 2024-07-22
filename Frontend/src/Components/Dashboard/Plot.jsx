@@ -3,6 +3,8 @@ import embed from "vega-embed";
 import axios from "axios";
 import ProductDetails from "../MLpage/Productdetails";
 import Reven from "../../assets/Revenue-bro.png";
+import Loader from "../Loader";
+
 const Plot = ({ product }) => {
   const chartRef = useRef(null);
   const [vegaSpec, setVegaSpec] = useState(null);
@@ -38,15 +40,6 @@ const Plot = ({ product }) => {
         Torque,
         Toolwear,
       } = product;
-      console.log(
-        name,
-        Type,
-        Airtemperature,
-        Processtemperature,
-        Rotationalspeed,
-        Torque,
-        Toolwear
-      );
       setFormData({
         Type,
         "Air Temperature": Airtemperature,
@@ -111,7 +104,7 @@ const Plot = ({ product }) => {
           <ProductDetails formData={newFormData} />
 
           {/* Form for Submitting Data */}
-          <div className="mt-12 bg-white p-6 rounded-xl ">
+          <div className="mt-12 bg-white p-6 rounded-xl">
             <h2 className="text-2xl font-bold text-green-700 mb-6">
               Interactive Feature Analysis
             </h2>
@@ -164,34 +157,39 @@ const Plot = ({ product }) => {
               </button>
             </form>
 
-            {loading && (
-              <div className="mt-4 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-green-500"></div>
-                <span className="ml-2 text-green-600">Loading chart...</span>
+            {loading ? (
+              <div className="flex flex-col items-center justify-center">
+                <Loader />
+                <h2 className="text-center pt-8 text-4xl md:text-5xl font-bold text-green-900 mb-6">
+                  Loading your data
+                </h2>
               </div>
+            ) : (
+              <>
+                {error && (
+                  <div
+                    className="mt-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded"
+                    role="alert"
+                  >
+                    <p className="font-bold">Error</p>
+                    <p>Error loading chart: {error.message}</p>
+                  </div>
+                )}
+                <div ref={chartRef} className="mt-6"></div>
+              </>
             )}
-
-            {error && (
-              <div
-                className="mt-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded"
-                role="alert"
-              >
-                <p className="font-bold">Error</p>
-                <p>Error loading chart: {error.message}</p>
-              </div>
-            )}
-
-            <div ref={chartRef} className="mt-6 "></div>
           </div>
         </>
       ) : (
-        <>
-  <div className="text-4xl text-green-800 font-extrabold text-center">
-    Please select a product to see the metrics and interactive analysis.
-    <img src={Reven} alt="Description of image" className="mx-auto" style={{ width: '480px', height: 'auto', maxHeight: '480px' }} />
-  </div>
-</>
-
+        <div className="text-4xl text-green-800 font-extrabold text-center">
+          Please select a product to see the metrics and interactive analysis.
+          <img
+            src={Reven}
+            alt="Description of image"
+            className="mx-auto"
+            style={{ width: "480px", height: "auto", maxHeight: "480px" }}
+          />
+        </div>
       )}
     </div>
   );

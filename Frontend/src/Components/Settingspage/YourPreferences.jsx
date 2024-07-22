@@ -10,6 +10,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { isTokenExpired } from '../../utils/authutils'; // Adjust the import path as needed
 import * as XLSX from 'xlsx';
+import Loader from '../Loader'; // Import your Loader component
 
 const YourPreferences = () => {
   const [products, setProducts] = useState([]);
@@ -25,6 +26,7 @@ const YourPreferences = () => {
     count: { value: null, matchMode: FilterMatchMode.CONTAINS },
     prediction: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const navigate = useNavigate();
 
@@ -39,6 +41,7 @@ const YourPreferences = () => {
           return;
         }
 
+        setLoading(true); // Set loading to true when starting to fetch data
         const response = await axios.get(`${import.meta.env.VITE_APP_URL}setting/getfavorites`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,6 +50,8 @@ const YourPreferences = () => {
         setProducts(response.data.products);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched or error occurs
       }
     };
 
@@ -63,6 +68,7 @@ const YourPreferences = () => {
         return;
       }
 
+      setLoading(true); // Set loading to true when starting to refresh data
       const response = await axios.get(`${import.meta.env.VITE_APP_URL}setting/getfavorites`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,6 +77,8 @@ const YourPreferences = () => {
       setProducts(response.data.products);
     } catch (error) {
       console.error('Error refreshing data:', error);
+    } finally {
+      setLoading(false); // Set loading to false after data is refreshed or error occurs
     }
   };
 
@@ -129,7 +137,21 @@ const YourPreferences = () => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold mb-4 text-green-800">Your Preferences</h2>
+      
+      <div className="card p-4">
+        {loading ? (
+          <>
+          
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <Loader />
+            <h2 className="text-center pt-8 text-4xl md:text-5xl font-bold text-green-900 mb-6">
+              Loading your data
+            </h2>
+          </div>
+        </>
+        ) : (
+          <>
+          <h2 className="text-3xl font-bold mb-4 text-green-800">Your Preferences</h2>
       <div className="flex justify-between items-center mb-4">
         <p className="text-lg text-gray-700 mb-4">Manage your preferences here.</p>
         <Button
@@ -139,75 +161,76 @@ const YourPreferences = () => {
           Download Excel
         </Button>
       </div>
-      <div className="card p-4">
-        <DataTable
-          value={products}
-          paginator
-          rows={5}
-          header={header}
-          filters={filters}
-          onFilter={(e) => setFilters(e.filters)}
-          tableStyle={{ minWidth: "60rem" }}
-          className="p-datatable-striped"
-          emptyMessage="No data found."
-        >
-          <Column
-            field="name"
-            header="Name"
-            sortable
-            filter
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Type"
-            header="Type"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Airtemperature"
-            header="Air Temperature"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Processtemperature"
-            header="Process Temperature"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Rotationalspeed"
-            header="Rotational Speed"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Torque"
-            header="Torque"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="Toolwear"
-            header="Tool Wear"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="count"
-            header="Count"
-            sortable
-            filterPlaceholder="Search"
-          />
-          <Column
-            field="prediction"
-            header="Prediction"
-            body={predictionBodyTemplate}
-            sortable
-            filterPlaceholder="Search"
-          />
-        </DataTable>
+          <DataTable
+            value={products}
+            paginator
+            rows={5}
+            header={header}
+            filters={filters}
+            onFilter={(e) => setFilters(e.filters)}
+            tableStyle={{ minWidth: "60rem" }}
+            className="p-datatable-striped"
+            emptyMessage="No data found."
+          >
+            <Column
+              field="name"
+              header="Name"
+              sortable
+              filter
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Type"
+              header="Type"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Airtemperature"
+              header="Air Temperature"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Processtemperature"
+              header="Process Temperature"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Rotationalspeed"
+              header="Rotational Speed"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Torque"
+              header="Torque"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="Toolwear"
+              header="Tool Wear"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="count"
+              header="Count"
+              sortable
+              filterPlaceholder="Search"
+            />
+            <Column
+              field="prediction"
+              header="Prediction"
+              body={predictionBodyTemplate}
+              sortable
+              filterPlaceholder="Search"
+            />
+          </DataTable>
+          </>
+        )}
       </div>
     </>
   );

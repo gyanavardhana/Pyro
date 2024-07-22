@@ -3,6 +3,8 @@ import Pyro from "../../assets/pyro-icon.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { isTokenExpired } from "../../utils/authutils";
+import { ToastContainer, toast, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState({
@@ -10,6 +12,12 @@ export default function Navbar() {
     profile: false,
   });
 
+  const navigateToLogin = () => {
+    
+    setTimeout(() => {
+      navigate("/login"); // Navigate to home page after delay
+    }, 1500); // Delay to match Toastify autoClose duration
+  };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
@@ -36,8 +44,22 @@ export default function Navbar() {
   const handleOptionClick = (path) => {
     const token = Cookies.get('authToken');
     if (!token || isTokenExpired(token)) {
-      alert('Session timed out');
-      navigate('/login');
+      toast.error('Session timed out', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Zoom,
+      });
+      if (window.location.pathname === "/login") {
+        window.location.reload();
+      } else {
+        navigateToLogin();
+      }
+      
       return;
     }
     navigate(path);
@@ -46,13 +68,25 @@ export default function Navbar() {
   const handleLogout = () => {
     Cookies.remove("authToken");
     setIsLoggedIn(false);
-    alert("Logged out successfully");
-    console.log(window.location.pathname);
-    if (window.location.pathname === "/") {
-      window.location.reload();
-    } else {
-      navigate('/');
-    }
+    toast.success("Logged out successfully", {
+      position: "bottom-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+      transition: Zoom,
+    });
+
+    // Delay navigation after toast
+    setTimeout(() => {
+      if (window.location.pathname === "/") {
+        window.location.reload();
+      } else {
+        navigate('/');
+      }
+    }, 1000); // Match this duration with the autoClose time of the toast
   };
 
   return (
@@ -151,6 +185,19 @@ export default function Navbar() {
           )}
         </div>
       </nav>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Zoom}
+      />
     </>
   );
 }
