@@ -47,7 +47,7 @@ const SettingsPage = () => {
             </button>
           </nav>
         </div>
-        <div className="w-4/5 bg-white p-8"> {/* Adjusted content area width */}
+        <div className="w-4/5 bg-gradient-to-r from-green-50 to-blue-50 p-8"> {/* Adjusted content area width */}
           {activeTab === "data" && <Data />}
           {activeTab === "preferences" && <Preferences />}
         </div>

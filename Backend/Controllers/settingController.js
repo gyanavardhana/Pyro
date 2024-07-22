@@ -18,6 +18,7 @@ const validateToken = (token) => {
 // Utility function to format product data with predictions
 const formatProductData = (products) => {
     return products.map(product => ({
+        _id: product._id,
         name: product.name,
         Type: product.Type,
         Airtemperature: product.Airtemperature,

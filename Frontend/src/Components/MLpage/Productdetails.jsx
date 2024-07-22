@@ -1,7 +1,7 @@
 const ProductDetails = ({ formData }) => (
     <div className="mt-8 bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg shadow-lg border border-green-200">
       <h3 className="text-2xl font-bold mb-6 text-green-800 border-b-2 border-green-300 pb-2">
-        Product Details
+        Product Details: {formData.name}
       </h3>
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
