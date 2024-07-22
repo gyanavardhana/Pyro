@@ -11,14 +11,8 @@
     "css": "npx tailwindcss -i ./src/index.css -o ./public/App.css --watch"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.16.4",
-    "@mui/material": "^5.16.4",
     "axios": "^1.7.2",
     "js-cookie": "^3.0.5",
-    "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^4.0.0",
     "material-react-table": "^2.13.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.7.0",
@@ -29,7 +23,8 @@
     "react-router-dom": "^6.25.1",
     "vega": "^5.30.0",
     "vega-embed": "^6.26.0",
-    "vega-lite": "^5.19.0"
+    "vega-lite": "^5.19.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

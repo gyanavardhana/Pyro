@@ -9,6 +9,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { isTokenExpired } from '../../utils/authutils'; // Adjust the import path as needed
+import * as XLSX from 'xlsx';
 
 const YourPreferences = () => {
   const [products, setProducts] = useState([]);
@@ -116,14 +117,28 @@ const YourPreferences = () => {
     );
   };
 
+  const handleExport = () => {
+    const filteredData = products.map(({ userid, _id, ...rest }) => rest);
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Preferences');
+    XLSX.writeFile(workbook, 'preferences.xlsx');
+  };
+
   const header = renderHeader();
 
   return (
     <>
-      <h2 className="text-3xl font-bold mb-4">Your Preferences</h2>
-      <p className="text-lg text-gray-700 mb-4">
-        Manage your preferences here.
-      </p>
+      <h2 className="text-3xl font-bold mb-4 text-green-800">Your Preferences</h2>
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-lg text-gray-700 mb-4">Manage your preferences here.</p>
+        <Button
+          onClick={handleExport}
+          className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 text-white px-4 py-2 rounded"
+        >
+          Download Excel
+        </Button>
+      </div>
       <div className="card p-4">
         <DataTable
           value={products}

@@ -1,0 +1,10 @@
+
+
+/* Style for selected radio button box */
+.p-datatable .p-datatable-tbody > tr.p-highlight > td .p-radiobutton-box {
+  background-color: #009688 !important; /* Darker teal for the radio button box */
+  border-color: #009688 !important; /* Darker teal border for the radio button box */
+}
+.p-radiobutton.p-component .p-radiobutton-box {
+  border-color: #009688 !important; /* Darker teal border for the radio button */
+}

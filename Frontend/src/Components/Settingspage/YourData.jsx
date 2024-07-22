@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { isTokenExpired } from '../../utils/authutils'; // Adjust the import path as needed
+import * as XLSX from 'xlsx';
 
 const YourData = () => {
   const [data, setData] = useState([]);
@@ -93,13 +94,29 @@ const YourData = () => {
     data, // Data must be memoized or stable
   });
 
+  const handleExport = () => {
+    const filteredData = data.map(({ userid, _id, ...rest }) => rest);
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+    XLSX.writeFile(workbook, 'data.xlsx');
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <h2 className="text-3xl font-bold mb-4">Your Data</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl font-bold text-green-800">Your Data</h2>
+        <button
+          onClick={handleExport}
+          className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 text-white px-4 py-2 rounded"
+        >
+          Download Excel
+        </button>
+      </div>
       <p className="text-lg text-gray-700 mb-4">Manage your data here.</p>
       <MaterialReactTable table={table} />
     </div>
