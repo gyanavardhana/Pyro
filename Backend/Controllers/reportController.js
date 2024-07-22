@@ -18,8 +18,8 @@ const validatetoken = (token) => {
         return null;
     }
 };
-
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyC_kRaTa9ECDAEcJxP8C1w7oh5UBe1y3Y8"; // Update with your API key
+console.log(process.env.GEM_KEY)
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.GEM_KEY}`; // Update with your API key
 const PREDICT_API_URL = `${process.env.ML_URI}/predict`;
 const PLOT_API_URL = `${process.env.ML_URI}/plot`;
 
