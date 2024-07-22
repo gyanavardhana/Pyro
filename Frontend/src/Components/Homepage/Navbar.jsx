@@ -50,14 +50,14 @@ export default function Navbar() {
     console.log(window.location.pathname);
     if (window.location.pathname === "/") {
       window.location.reload();
-    }else{
+    } else {
       navigate('/');
     }
   };
 
   return (
     <>
-      <nav className="bg-green-100 p-4 flex flex-wrap justify-between items-center shadow-md w-full fixed top-0 border-b border-black">
+      <nav className="bg-green-100 p-4 flex flex-wrap justify-between items-center shadow-md w-full fixed top-0 border-b border-black z-50">
         <div className="flex items-center space-x-16">
           <img src={Pyro} alt="Pyro Icon" className="h-10 w-55 cursor-pointer" onClick={() => navigate('/')} />
           <button

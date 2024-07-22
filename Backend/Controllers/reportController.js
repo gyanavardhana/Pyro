@@ -1,4 +1,3 @@
-// Imports
 const express = require('express');
 const axios = require('axios');
 const PDFDocument = require('pdfkit');
@@ -8,8 +7,8 @@ const Product = require('../Models/productModel');
 const logger = require('../logger/logger');
 const jwt = require('jsonwebtoken');
 const cons = require('../cons');
+const { marked } = require('marked');
 
-// Helper function to validate JWT token
 const validatetoken = (token) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -19,10 +18,10 @@ const validatetoken = (token) => {
         return null;
     }
 };
-
-const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=<API_KEY>"; // Update with your API key
-const PREDICT_API_URL = "https://flask-predict-1p0e.onrender.com/predict";
-const PLOT_API_URL = "https://flask-predict-1p0e.onrender.com/plot";
+console.log(process.env.GEM_KEY)
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.GEM_KEY}`; // Update with your API key
+const PREDICT_API_URL = `${process.env.ML_URI}/predict`;
+const PLOT_API_URL = `${process.env.ML_URI}/plot`;
 
 const generatePdfController = async (req, res) => {
     try {
@@ -75,7 +74,7 @@ const generatePdfController = async (req, res) => {
                 {
                     role: "user",
                     parts: [
-                        { text: "Generate a detailed report for the following product data with suggestions: " + JSON.stringify(requestBody) + "This is a data of products"}
+                        { text: "Generate a detailed report for the following product data with suggestions: " + JSON.stringify(requestBody) + "This is a data of products" }
                     ]
                 }
             ]
@@ -93,7 +92,10 @@ const generatePdfController = async (req, res) => {
             return res.status(500).json({ message: 'Invalid response from Gemini API' });
         }
 
-        const detailedReport = geminiResponse.data.candidates[0].content.parts.map(part => part.text);
+        const detailedReportMarkdown = geminiResponse.data.candidates[0].content.parts.map(part => part.text).join("\n");
+
+        // Convert markdown to HTML
+        const detailedReportHtml = marked(detailedReportMarkdown);
 
         // Create a PDF document
         const doc = new PDFDocument();
@@ -121,13 +123,20 @@ const generatePdfController = async (req, res) => {
         doc.text(`Probability Maintenance Needed: ${predictionData.probability_maintenance_needed}`);
         doc.text(`Probability No Maintenance: ${predictionData.probability_no_maintenance}`);
 
-        // Add the detailed report to the PDF
         // Add horizontal line
         doc.moveTo(72, doc.y + 20).lineTo(522, doc.y + 20).stroke();
         doc.moveDown();
         doc.moveDown();
         doc.text('Detailed Report', { align: 'center' });
-        doc.fontSize(12).text(detailedReport);
+
+        // Convert HTML to plain text and add it to the PDF
+        const htmlToPdf = (html) => {
+            const text = html.replace(/<[^>]+>/g, '');
+            return text;
+        };
+
+        doc.fontSize(12).text(htmlToPdf(detailedReportHtml));
+
         // End the PDF document
         doc.end();
     } catch (error) {
