@@ -62,12 +62,12 @@
 
 **APIs:**
 
-* **Gemini API** ([Icon for API or puzzle piece])
-* **Resend API** ([Icon for envelope or looping arrow])
+* **Gemini API** 
+* **Resend API** 
 
 **Cloud Platform:**
 
-* **Microsoft Azure** ([Icon for Azure])
+* **Microsoft Azure**
 
 ## Benefits
 
