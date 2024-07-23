@@ -128,27 +128,31 @@ End to end azure pipeline with Restapi support
 ## User Interface
 
 - ## Settings
-![image](https://github.com/user-attachments/assets/4f3f9dd7-2b30-4c28-99b2-ce0447376c0c)
+![Yourdata-](https://github.com/user-attachments/assets/255671bd-a0c1-4f7b-a1a7-f9a23a9972e3)
+
 
   - **Your Data**: Displays all product data and predictions for products created by the user.
   - **Your Preferences**: Shows data and predictions for products marked as favorites by the user.
 
 - ## ML Upload Page
-![image](https://github.com/user-attachments/assets/e8e8b2dc-0162-4202-98a8-d36e9949405f)
+![image](https://github.com/user-attachments/assets/8b9cc3c0-4f64-461d-966c-56c3c1c8c68e)
+
 
 
   - **Data Entry**: Users can input product data through a form.
   - **Prediction**: Displays the prediction result after submission.
 
 - ## Dashboard Page
-![image](https://github.com/user-attachments/assets/eed8ee0b-a187-42ed-8029-018eb9c71c2a)
+![Dashboard3](https://github.com/user-attachments/assets/45d223b7-734e-4750-8efd-244239cd2635)
+
 
 
    - Provides an overview of all product data and predictions.
    - Users can select any product to view detailed input features and prediction results.
 
 - ## Leaderboard
-![image](https://github.com/user-attachments/assets/d1b483f4-f1ef-4a23-8b8b-f51344c54bec)
+![Leaderboard](https://github.com/user-attachments/assets/c12e956e-6c1a-4e40-891e-3ede91dde5fa)
+
 
   - Ranks products based on `probability_maintenance_needed` and `probability_no_maintenance`.
   - Sends email alerts to users if their products perform poorly.
