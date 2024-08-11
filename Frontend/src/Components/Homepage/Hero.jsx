@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Dashboard from "../../assets/testdashboardhero.jpg";
+import Dashboard from "../../assets/MLUpload3.png";
 import WorkIcon from "../../assets/location.jpg";
 import MonitorIcon from "../../assets/monitor.jpg";
 import InsightsIcon from  "../../assets/insights.jpg";
@@ -61,7 +61,7 @@ const Hero = () => {
       <img
         src={Dashboard}
         alt="Dashboard"
-        className="mt-10 mx-auto max-w-full"
+        className="mt-10 mx-auto rounded-xl max-w-full"
       />
 
       {/* Section with four blocks */}
