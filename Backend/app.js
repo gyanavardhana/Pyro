@@ -12,7 +12,7 @@ const reportRoutes= require("./Routes/reportRoutes");
 
 // Middleware
 app.use(cors({
-  origin: '*',
+  origin: 'https://pyro-chi.vercel.app',
 }));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
