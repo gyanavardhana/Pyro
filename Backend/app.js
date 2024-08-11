@@ -10,7 +10,10 @@ const leaderRoutes = require("./Routes/leaderRoute");
 const leaderboardRoutes= require("./Routes/leaderboardRoute");
 const reportRoutes= require("./Routes/reportRoutes");
 
-app.use(cors());
+// Middleware
+app.use(cors({
+  origin: '*',
+}));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
 app.use('/ml', mlRoutes);
