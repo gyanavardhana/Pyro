@@ -99,31 +99,7 @@ const BelowHero = () => {
             />
           </div>
         </div>
-        <div className="max-w-4xl mx-auto mt-52 flex flex-col md:flex-row items-center justify-between">
-          {/* Left Content Section */}
-          <div className="md:w-1/2 mb-8 md:mb-0 md:mr-8">
-            <img
-              src={collab}
-              alt="Effortless collaboration"
-              className="w-full h-auto rounded-md shadow-md"
-            />
-          </div>
-          {/* Right Image Section */}
-          <div className="md:w-1/2">
-            <h2 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
-              Effortless collaboration
-            </h2>
-            <p className="text-lg md:text-xl text-gray-700 mb-8">
-              Pyro makes it easy to collaborate on maintenance projects.
-              Real-time updates keep all team members informed, and our
-              leaderboard feature helps you track and compare product
-              performance across your organization.
-            </p>
-            <a href="#" className="text-green-600 hover:underline">
-              Learn more
-            </a>
-          </div>
-        </div>
+        
         <div className="max-w-4xl mt-52 mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-green-900 mb-6">
             Pyro in action

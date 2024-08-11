@@ -152,7 +152,7 @@ const Table = ({ selectionMode, selectedProduct, onSelectionChange }) => {
         <div className="card p-4 rounded-lg w-full max-w-6xl">
           <DataTable
             value={products}
-            rows={6}
+            rows={4}
             header={header}
             filters={filters}
             onFilter={(e) => setFilters(e.filters)}

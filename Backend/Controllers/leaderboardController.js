@@ -94,13 +94,13 @@ const getLeaderboard = async (req, res) => {
                 }
             },
             {
-                $sort: { rankScore: -1 }
+                $sort: { rankScore: 1 }
             },
             {
                 $setWindowFields: {
                     sortBy: { rankScore: 1 },
                     output: {
-                        rank: { $rank: {} }
+                        rank: { $denseRank: {} }
                     }
                 }
             },
