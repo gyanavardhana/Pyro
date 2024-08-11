@@ -1,0 +1,33 @@
+# Exported from Render on 2024-08-11T07:16:59Z
+services:
+- type: web
+  name: Pyro
+  runtime: docker
+  repo: https://github.com/gyanavardhana/Pyro
+  plan: free
+  envVars:
+  - key: SEND_KEY
+    sync: false
+  - key: GEM_KEY
+    sync: false
+  - key: ML_URI
+    sync: false
+  - key: MONGO_URI
+    sync: false
+  - key: JWT_SECRET
+    sync: false
+  - key: NODE_ENV
+    sync: false
+  region: oregon
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+  rootDir: ./Backend
+- type: web
+  name: flask-predict
+  runtime: python
+  repo: https://github.com/gyanavardhana/flask-predict
+  plan: free
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: gunicorn app:app
+version: "1"
