@@ -17,8 +17,14 @@ const generateAndOpenPdf = async () => {
     const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
 
     // Open the URL in a new tab
-    const pdfWindow = window.open();
-    pdfWindow.location.href = url;
+     let pdfWindow = window.open();
+    if (pdfWindow) {
+      pdfWindow.location.href = url;
+    } else {
+      // Fallback: Open directly in a new tab
+      window.open(url, "_blank");
+    }
+
 
     // Notify the user of successful PDF generation
     toast.success('PDF generated and opened successfully!', {
