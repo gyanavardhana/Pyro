@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { toast, Zoom } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
+import { toast, Zoom } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const generateAndOpenPdf = async () => {
   try {
@@ -10,24 +10,30 @@ const generateAndOpenPdf = async () => {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
-      responseType: 'blob', // Important: This tells axios to treat the response as a Blob
+      responseType: 'blob', // Treat response as Blob (PDF)
     });
 
-    // Create a URL from the blob
-    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
 
-    // Open the URL in a new tab
-     let pdfWindow = window.open();
+    // Open the PDF in a new tab
+    let pdfWindow = window.open();
     if (pdfWindow) {
       pdfWindow.location.href = url;
     } else {
-      // Fallback: Open directly in a new tab
-      window.open(url, "_blank");
+      window.open(url, '_blank');
     }
 
+    // Create a download link and trigger click
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.pdf'); // Set download filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Clean up
 
-    // Notify the user of successful PDF generation
-    toast.success('PDF generated and opened successfully!', {
+    // Notify the user of success
+    toast.success('PDF opened and downloaded successfully!', {
       position: 'bottom-right',
       autoClose: 1000,
       hideProgressBar: false,
@@ -39,8 +45,7 @@ const generateAndOpenPdf = async () => {
     });
 
   } catch (error) {
-    // Notify the user of an error
-    toast.error('Error generating or opening PDF', {
+    toast.error('Error generating or downloading PDF', {
       position: 'bottom-right',
       autoClose: 1000,
       hideProgressBar: false,
@@ -51,7 +56,7 @@ const generateAndOpenPdf = async () => {
       transition: Zoom,
     });
 
-    console.error('Error generating or opening PDF:', error);
+    console.error('Error generating or downloading PDF:', error);
   }
 };
 
