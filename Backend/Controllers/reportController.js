@@ -19,7 +19,7 @@ const validatetoken = (token) => {
     }
 };
 console.log(process.env.GEM_KEY)
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${process.env.GEM_KEY}`; // Update with your API key
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEM_KEY}`; // Update with your API key
 const PREDICT_API_URL = `${process.env.ML_URI}/predict`;
 const PLOT_API_URL = `${process.env.ML_URI}/plot`;
 
