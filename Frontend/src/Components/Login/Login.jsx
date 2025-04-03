@@ -34,7 +34,13 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
-
+    axios.get("https://flask-predict-1p0e.onrender.com/heartbeat")
+          .then(heartbeatResponse => {
+            console.log("Heartbeat Response:", heartbeatResponse.data);
+          })
+          .catch(err => {
+            console.error("Heartbeat API Error:", err);
+          });
     toast.promise(
       axios.post(`${import.meta.env.VITE_APP_URL}user/login`, { email, password })
         .then(response => {
